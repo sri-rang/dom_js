@@ -147,6 +147,17 @@
             ((child_center_x >= container_bounds.left && child_center_x <= container_bounds.right) && (child_center_y >= container_bounds.top && child_center_y <= container_bounds.bottom));
     };
 
+    /**
+     * is the mouse event `e` a right click?
+     * stolen from: http://stackoverflow.com/a/2405835/156225
+     */
+    dom_js.is_right_click = function (e) {
+        // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+        if ("which" in e) return e.which === 3;
+        // IE, Opera
+        else if ("button" in e) return e.button === 2;
+    };
+
     function parse_name(arg) {
         var split, arg_copy = arg,
             namespace, tag, class_name, id;
