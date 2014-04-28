@@ -7,13 +7,15 @@
     window.dom_js = {};
 
     dom_js.key_codes = {
-        escape: 27,
-        enter : 13,
-        tab   : 9,
-        left  : 37,
-        up    : 38,
-        right : 39,
-        down  : 40
+        escape    : 27,
+        enter     : 13,
+        tab       : 9,
+        delete    : 46,
+        backspace : 8,
+        left      : 37,
+        up        : 38,
+        right     : 39,
+        down      : 40
     };
 
     dom_js.create_element = function (name, attributes, children, events_and_listeners) {
@@ -156,6 +158,23 @@
         if ("which" in e) return e.which === 3;
         // IE, Opera
         else if ("button" in e) return e.button === 2;
+    };
+
+    /**
+     * is object `o` a node?
+     * stolen from: http://stackoverflow.com/a/384380/156225
+     */
+    dom_js.is_node = function (o) {
+        return (typeof Node === "object" ? o instanceof Node : o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string");
+    };
+
+    /**
+     * is object `o` an html element?
+     * stolen from: http://stackoverflow.com/a/384380/156225
+     */
+    dom_js.is_html_element = function (o) {
+        return (typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string");
     };
 
     function parse_name(arg) {
