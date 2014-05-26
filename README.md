@@ -1,4 +1,5 @@
-dom.js
-======
+# dom.js
 
-a collection of dom utility functions
+collection of dom utility functions
+
+ecmascript 5 required
