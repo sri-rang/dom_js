@@ -1,4 +1,3 @@
-/* global window, dom_js, _ */
 (function (global) {
     "use strict";
 
