@@ -1,10 +1,10 @@
-(function (global) {
+(function () {
     "use strict";
 
     var namespaces = { svg: "http://www.w3.org/2000/svg" },
         dom_js = {};
 
-    global.dom_js = dom_js;
+    window.dom_js = dom_js;
 
     dom_js.key_codes = {
         escape: 27,
@@ -206,4 +206,4 @@
         };
     }
 
-})(window || global);
+})();
