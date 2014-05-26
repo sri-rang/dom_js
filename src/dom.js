@@ -18,6 +18,14 @@
         down: 40
     };
 
+    /**
+     * create element
+     * @param name
+     * @param [attributes]
+     * @param [children]
+     * @param [events_and_listeners]
+     * @returns {*}
+     */
     dom_js.create_element = function (name, attributes, children, events_and_listeners) {
         var element;
         name = parse_name(name);
@@ -35,12 +43,12 @@
     };
 
     dom_js.add_event_listener = function (elements, events, listeners) {
-        if (!_.isArray(elements)) elements = [elements];
-        if (!_.isArray(events)) events = [events];
-        if (!_.isArray(listeners)) listeners = [listeners];
-        _.each(elements, function (element) {
-            _.each(events, function (event) {
-                _.each(listeners, function (listener) {
+        if (!Array.isArray(elements)) elements = [elements];
+        if (!Array.isArray(events)) events = [events];
+        if (!Array.isArray(listeners)) listeners = [listeners];
+        elements.forEach(function (element) {
+            events.forEach(function (event) {
+                listeners.forEach(function (listener) {
                     if (!element.addEventListener) element.attachEvent("on" + event, listener);
                     else element.addEventListener(event, listener, false);
                 });
@@ -49,12 +57,12 @@
     };
 
     dom_js.remove_event_listener = function (elements, events, listeners) {
-        if (!_.isArray(elements)) elements = [elements];
-        if (!_.isArray(events)) events = [events];
-        if (!_.isArray(listeners)) listeners = [listeners];
-        _.each(elements, function (element) {
-            _.each(events, function (event) {
-                _.each(listeners, function (listener) {
+        if (!Array.isArray(elements)) elements = [elements];
+        if (!Array.isArray(events)) events = [events];
+        if (!Array.isArray(listeners)) listeners = [listeners];
+        elements.forEach(function (element) {
+            events.forEach(function (event) {
+                listeners.forEach(function (listener) {
                     if (!element.removeEventListener) element.detachEvent("on" + event, listener);
                     else element.removeEventListener(event, listener, false);
                 });
@@ -62,22 +70,42 @@
         });
     };
 
+    /**
+     * add `events_and_listeners` to `elements`
+     * @param elements
+     * @param events_and_listeners
+     */
     dom_js.add_event_listeners = function (elements, events_and_listeners) {
-        if (!_.isArray(elements)) elements = [elements];
+        if (!Array.isArray(elements)) elements = [elements];
         for (var event in events_and_listeners) {
             if (events_and_listeners.hasOwnProperty(event)) dom_js.add_event_listener(elements, event, events_and_listeners[event]);
         }
     };
 
-    dom_js.remove_event_listeners = function (elements, eventsAndListeners) {
-        if (!_.isArray(elements)) elements = [elements];
-        for (var event in eventsAndListeners) {
-            if (eventsAndListeners.hasOwnProperty(event)) dom_js.remove_event_listener(elements, event, eventsAndListeners[event]);
+    /**
+     * remove `events_and_listeners` from `elements`
+     * @param elements
+     * @param events_and_listeners
+     */
+    dom_js.remove_event_listeners = function (elements, events_and_listeners) {
+        if (!Array.isArray(elements)) elements = [elements];
+        for (var event in events_and_listeners) {
+            if (events_and_listeners.hasOwnProperty(event)) dom_js.remove_event_listener(elements, event, events_and_listeners[event]);
         }
     };
 
-    dom_js.append_children = function (parent, children) { _.each(children, function (child) { dom_js.append_child(parent, child); }); };
+    /**
+     * append `children` to `parent`
+     * @param parent
+     * @param children
+     */
+    dom_js.append_children = function (parent, children) { children.forEach(function (child) { dom_js.append_child(parent, child); }); };
 
+    /**
+     * append `child` to `parent`
+     * @param parent
+     * @param child
+     */
     dom_js.append_child = function (parent, child) {
         if (typeof child === "string") {
             if (parent.namespace === namespaces.svg) child = document.createTextNode(child, true);
@@ -86,43 +114,82 @@
         parent.appendChild(child);
     };
 
+    /**
+     * remove `element`
+     * @param element
+     */
     dom_js.remove_element = function (element) { if (element && element.parentNode) element.parentNode.removeChild(element); };
 
-    dom_js.remove_elements = function (elements) { _.each(elements, function (element) { dom_js.remove_element(element); }); };
+    /**
+     * remove `elements`
+     * @param elements
+     */
+    dom_js.remove_elements = function (elements) { elements.forEach(function (element) { dom_js.remove_element(element); }); };
 
+    /**
+     * empty `element`
+     * @param element
+     */
     dom_js.empty_element = function (element) {
         while (element.firstChild) element.removeChild(element.firstChild);
     };
 
+    /**
+     * set `attributes` to `element`
+     * @param element
+     * @param attributes
+     */
     dom_js.set_attributes = function (element, attributes) {
         for (var key in attributes) if (attributes.hasOwnProperty(key)) element.setAttribute(key, attributes[key]);
     };
 
-    dom_js.prevent_default = function (e) {
-        if (e.preventDefault) e.preventDefault();
-        else e.returnValue = false;
+    /**
+     * prevent default for `event`
+     * @param event
+     */
+    dom_js.prevent_default = function (event) {
+        if (event.preventDefault) event.preventDefault();
+        else event.returnValue = false;
     };
 
-    dom_js.stop_propagation = function (e) {
-        if (e.stopPropagation) e.stopPropagation();
+    /**
+     * stop propagation of `event`
+     * @param event
+     */
+    dom_js.stop_propagation = function (event) {
+        if (event.stopPropagation) event.stopPropagation();
         else {
-            e.cancelBubble = true;
-            e.returnValue = false;
+            event.cancelBubble = true;
+            event.returnValue = false;
         }
     };
 
-    dom_js.squash_event = function squash_event(e) {
-        dom_js.prevent_default(e);
-        dom_js.stop_propagation(e);
+    /**
+     * squash `event`
+     * @param event
+     * @returns {boolean}
+     */
+    dom_js.squash_event = function squash_event(event) {
+        dom_js.prevent_default(event);
+        dom_js.stop_propagation(event);
         return false;
     };
 
+    /**
+     * get bounds for page
+     * @returns {{width: (Number|number), height: (Number|number)}}
+     */
     dom_js.get_page_bounds = function () {
         var w = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth,
             h = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
         return {width: w, height: h};
     };
 
+    /**
+     * get bounds for `element`
+     * @param element
+     * @returns {{x: (*|n.x|Number), y: (*|n.y|Number), width: Number, height: Number, top: Number, left: Number, bottom: Number, right: Number}}
+     */
     dom_js.get_bounds = function (element) {
         var native_bounds = element.getBoundingClientRect(),
             bounds = {
@@ -140,6 +207,12 @@
         return bounds;
     };
 
+    /**
+     * is `child` within bounds of `container`
+     * @param child
+     * @param container
+     * @returns {boolean}
+     */
     dom_js.is_within_bounds = function (child, container) {
         var child_bounds = dom_js.get_bounds(child),
             container_bounds = dom_js.get_bounds(container),
