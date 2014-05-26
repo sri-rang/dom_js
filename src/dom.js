@@ -1,21 +1,21 @@
-/* global window, dom_js, _ */
-(function () {
+(function (global) {
     "use strict";
 
-    var namespaces = { svg: "http://www.w3.org/2000/svg" };
+    var namespaces = { svg: "http://www.w3.org/2000/svg" },
+        dom_js = {};
 
-    window.dom_js = {};
+    global.dom_js = dom_js;
 
     dom_js.key_codes = {
-        escape    : 27,
-        enter     : 13,
-        tab       : 9,
-        delete    : 46,
-        backspace : 8,
-        left      : 37,
-        up        : 38,
-        right     : 39,
-        down      : 40
+        escape: 27,
+        enter: 13,
+        tab: 9,
+        delete: 46,
+        backspace: 8,
+        left: 37,
+        up: 38,
+        right: 39,
+        down: 40
     };
 
     dom_js.create_element = function (name, attributes, children, events_and_listeners) {
@@ -126,14 +126,14 @@
     dom_js.get_bounds = function (element) {
         var native_bounds = element.getBoundingClientRect(),
             bounds = {
-                x     : native_bounds.x,
-                y     : native_bounds.y,
-                width : native_bounds.width,
+                x: native_bounds.x,
+                y: native_bounds.y,
+                width: native_bounds.width,
                 height: native_bounds.height,
-                top   : native_bounds.top,
-                left  : native_bounds.left,
+                top: native_bounds.top,
+                left: native_bounds.left,
                 bottom: native_bounds.bottom,
-                right : native_bounds.right
+                right: native_bounds.right
             };
         if (!bounds.height) bounds.height = bounds.bottom - bounds.top;
         if (!bounds.width) bounds.width = bounds.right - bounds.left;
@@ -165,7 +165,7 @@
      * stolen from: http://stackoverflow.com/a/384380/156225
      */
     dom_js.is_node = function (o) {
-        return (typeof Node === "object" ? o instanceof Node : o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string");
+        return (typeof Node === "object" ? o instanceof Node : o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string");
     };
 
     /**
@@ -174,7 +174,7 @@
      */
     dom_js.is_html_element = function (o) {
         return (typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string");
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
     };
 
     function parse_name(arg) {
@@ -199,11 +199,11 @@
         if (!tag) tag = arg_copy;
         if (!tag) throw new Error("failed to create element for: " + arg);
         return {
-            namespace : namespaces[namespace],
-            tag       : tag,
+            namespace: namespaces[namespace],
+            tag: tag,
             class_name: class_name,
-            id        : id
+            id: id
         };
     }
 
-})();
+})(window || global);
