@@ -99,7 +99,9 @@
      * @param parent
      * @param children
      */
-    dom_js.append_children = function (parent, children) { children.forEach(function (child) { dom_js.append_child(parent, child); }); };
+    dom_js.append_children = function (parent, children) {
+        if (Array.isArray(children)) children.forEach(function (child) { dom_js.append_child(parent, child); });
+    };
 
     /**
      * append `child` to `parent`
@@ -124,7 +126,7 @@
      * remove `elements`
      * @param elements
      */
-    dom_js.remove_elements = function (elements) { elements.forEach(function (element) { dom_js.remove_element(element); }); };
+    dom_js.remove_elements = function (elements) { if (Array.isArray(elements)) elements.forEach(function (element) { dom_js.remove_element(element); }); };
 
     /**
      * empty `element`
@@ -204,6 +206,8 @@
             };
         if (!bounds.height) bounds.height = bounds.bottom - bounds.top;
         if (!bounds.width) bounds.width = bounds.right - bounds.left;
+        if (!bounds.x) bounds.x = bounds.left;
+        if (!bounds.y) bounds.y = bounds.top;
         return bounds;
     };
 
@@ -218,19 +222,21 @@
             container_bounds = dom_js.get_bounds(container),
             child_center_x = child_bounds.left + (child_bounds.width / 2),
             child_center_y = child_bounds.top + (child_bounds.height / 2);
-        return ((child_bounds.left >= container_bounds.left && child_bounds.left <= container_bounds.right) && (child_bounds.top >= container_bounds.top && child_bounds.top <= container_bounds.bottom)) ||
-            ((child_center_x >= container_bounds.left && child_center_x <= container_bounds.right) && (child_center_y >= container_bounds.top && child_center_y <= container_bounds.bottom));
+        return ((child_bounds.left >= container_bounds.left && child_bounds.left <= container_bounds.right) &&
+            (child_bounds.top >= container_bounds.top && child_bounds.top <= container_bounds.bottom)) ||
+            ((child_center_x >= container_bounds.left && child_center_x <= container_bounds.right) &&
+                (child_center_y >= container_bounds.top && child_center_y <= container_bounds.bottom));
     };
 
     /**
-     * is the mouse event `e` a right click?
+     * is the mouse `event` a right click?
      * stolen from: http://stackoverflow.com/a/2405835/156225
      */
-    dom_js.is_right_click = function (e) {
+    dom_js.is_right_click = function (event) {
         // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-        if ("which" in e) return e.which === 3;
+        if ("which" in event) return event.which === 3;
         // IE, Opera
-        else if ("button" in e) return e.button === 2;
+        else if ("button" in event) return event.button === 2;
     };
 
     /**
