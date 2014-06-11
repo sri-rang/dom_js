@@ -34,7 +34,7 @@
             element.namespace = name.namespace;
         }
         else element = document.createElement(name.tag);
-        if (name.class_name) element.className = name.class_name;
+        if (name.class_name) name.class_name.split(" ").forEach(function (n) { element.classList.add(n); });
         if (name.id) element.id = name.id;
         dom_js.set_attributes(element, attributes);
         dom_js.append_children(element, children);
