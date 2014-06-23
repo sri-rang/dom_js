@@ -36,7 +36,7 @@
         else element = document.createElement(name.tag);
         if (name.class_name) {
             if (element.classList) name.class_name.split(" ").forEach(function (n) { element.classList.add(n); });
-            else element.className = name.class_name;
+            else element.setAttribute("class", name.class_name);
         }
         if (name.id) element.id = name.id;
         dom_js.set_attributes(element, attributes);
