@@ -10,7 +10,7 @@
         escape: 27,
         enter: 13,
         tab: 9,
-        delete: 46,
+        del: 46,
         backspace: 8,
         left: 37,
         up: 38,
@@ -52,8 +52,8 @@
         elements.forEach(function (element) {
             events.forEach(function (event) {
                 listeners.forEach(function (listener) {
-                    if (!element.addEventListener) element.attachEvent("on" + event, listener);
-                    else element.addEventListener(event, listener, false);
+                    if (element.addEventListener) element.addEventListener(event, listener, false);
+                    else if (element.attachEvent) element.attachEvent("on" + event, listener);
                 });
             });
         });
