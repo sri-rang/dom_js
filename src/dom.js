@@ -278,6 +278,10 @@
             else tag = split[0];
             class_name = split[1];
         }
+        else {
+            tag = split[0];
+            id = split[1];
+        }
         if (!tag) tag = arg_copy;
         if (!tag) throw new Error("failed to create element for: " + arg);
         return {
