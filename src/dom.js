@@ -279,8 +279,13 @@
             class_name = split[1];
         }
         else {
-            tag = split[0];
-            id = split[1];
+            if (split) {
+                tag = split[0];
+                id = split[1];
+            }
+            else {
+                tag = arg;
+            }
         }
         if (!tag) tag = arg_copy;
         if (!tag) throw new Error("failed to create element for: " + arg);
@@ -291,5 +296,28 @@
             id: id
         };
     }
+
+    dom_js.Accordion = function (list, content_renderer) {
+        var accordion = this;
+        var sections = list.map(function (item) {
+            var header = dom_js.create_element("div.header", null, [item.title], {click: on_click});
+            var section = dom_js.create_element("div.section", null, [header]);
+
+            function on_click() {
+                if (!on_click.content) {
+                    on_click.content = content_renderer(item);
+                    dom_js.append_child(section, on_click.content);
+                }
+                else {
+                    dom_js.remove_element(on_click.content);
+                    on_click.content = null;
+                }
+            }
+
+            return section;
+        });
+        accordion.dom_element = dom_js.create_element("div.accordion", null, sections);
+        return accordion;
+    };
 
 })();
