@@ -307,10 +307,12 @@
                 if (!on_click.content) {
                     on_click.content = content_renderer(item);
                     dom_js.append_child(section, on_click.content);
+                    section.classList.add("section_active");
                 }
                 else {
                     dom_js.remove_element(on_click.content);
                     on_click.content = null;
+                    section.classList.remove("section_active");
                 }
             }
 
