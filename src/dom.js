@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var namespaces = { svg: "http://www.w3.org/2000/svg" },
+    var namespaces = {svg: "http://www.w3.org/2000/svg"},
         dom_js = {};
 
     window.dom_js = dom_js;
@@ -228,7 +228,7 @@
         return ((child_bounds.left >= container_bounds.left && child_bounds.left <= container_bounds.right) &&
             (child_bounds.top >= container_bounds.top && child_bounds.top <= container_bounds.bottom)) ||
             ((child_center_x >= container_bounds.left && child_center_x <= container_bounds.right) &&
-                (child_center_y >= container_bounds.top && child_center_y <= container_bounds.bottom));
+            (child_center_y >= container_bounds.top && child_center_y <= container_bounds.bottom));
     };
 
     /**
@@ -256,7 +256,7 @@
      */
     dom_js.is_html_element = function (o) {
         return (typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
+        o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
     };
 
     function parse_name(arg) {
