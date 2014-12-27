@@ -1,8 +1,0 @@
-{
-    "js": {
-        "type": "javascript",
-        "sources": ["src/dom.js"],
-        "target": "target/dom.min.js",
-        "watch_folders": ["src"]
-    }
-}
