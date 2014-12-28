@@ -1,12 +1,14 @@
 (function () {
     "use strict";
 
-    var namespaces = {svg: "http://www.w3.org/2000/svg"},
-        dom_js = {};
+    var namespaces = {svg: "http://www.w3.org/2000/svg"};
 
-    window.dom_js = dom_js;
+    module.exports = {};
 
-    dom_js.key_codes = {
+    /**
+     * commonly used key codes
+     */
+    module.exports.key_codes = {
         escape: 27,
         enter: 13,
         tab: 9,
@@ -26,7 +28,7 @@
      * @param [events_and_listeners]
      * @returns {*}
      */
-    dom_js.create_element = function (name, attributes, children, events_and_listeners) {
+    module.exports.create_element = function (name, attributes, children, events_and_listeners) {
         var element;
         name = parse_name(name);
         if (name.namespace) {
@@ -39,13 +41,13 @@
             else element.setAttribute("class", name.class_name);
         }
         if (name.id) element.id = name.id;
-        dom_js.set_attributes(element, attributes);
-        dom_js.append_children(element, children);
-        dom_js.add_event_listeners(element, events_and_listeners);
+        module.exports.set_attributes(element, attributes);
+        module.exports.append_children(element, children);
+        module.exports.add_event_listeners(element, events_and_listeners);
         return element;
     };
 
-    dom_js.add_event_listener = function (elements, events, listeners) {
+    module.exports.add_event_listener = function (elements, events, listeners) {
         if (!Array.isArray(elements)) elements = [elements];
         if (!Array.isArray(events)) events = [events];
         if (!Array.isArray(listeners)) listeners = [listeners];
@@ -59,7 +61,7 @@
         });
     };
 
-    dom_js.remove_event_listener = function (elements, events, listeners) {
+    module.exports.remove_event_listener = function (elements, events, listeners) {
         if (!Array.isArray(elements)) elements = [elements];
         if (!Array.isArray(events)) events = [events];
         if (!Array.isArray(listeners)) listeners = [listeners];
@@ -74,44 +76,44 @@
     };
 
     /**
-     * add `events_and_listeners` to `elements`
+     * add events_and_listeners to elements
      * @param elements
      * @param events_and_listeners
      */
-    dom_js.add_event_listeners = function (elements, events_and_listeners) {
+    module.exports.add_event_listeners = function (elements, events_and_listeners) {
         if (!Array.isArray(elements)) elements = [elements];
         for (var event in events_and_listeners) {
-            if (events_and_listeners.hasOwnProperty(event)) dom_js.add_event_listener(elements, event, events_and_listeners[event]);
+            if (events_and_listeners.hasOwnProperty(event)) module.exports.add_event_listener(elements, event, events_and_listeners[event]);
         }
     };
 
     /**
-     * remove `events_and_listeners` from `elements`
+     * remove events_and_listeners from elements
      * @param elements
      * @param events_and_listeners
      */
-    dom_js.remove_event_listeners = function (elements, events_and_listeners) {
+    module.exports.remove_event_listeners = function (elements, events_and_listeners) {
         if (!Array.isArray(elements)) elements = [elements];
         for (var event in events_and_listeners) {
-            if (events_and_listeners.hasOwnProperty(event)) dom_js.remove_event_listener(elements, event, events_and_listeners[event]);
+            if (events_and_listeners.hasOwnProperty(event)) module.exports.remove_event_listener(elements, event, events_and_listeners[event]);
         }
     };
 
     /**
-     * append `children` to `parent`
+     * append children to parent
      * @param parent
      * @param children
      */
-    dom_js.append_children = function (parent, children) {
-        if (Array.isArray(children)) children.forEach(function (child) { dom_js.append_child(parent, child); });
+    module.exports.append_children = function (parent, children) {
+        if (Array.isArray(children)) children.forEach(function (child) { module.exports.append_child(parent, child); });
     };
 
     /**
-     * append `child` to `parent`
+     * append child to parent
      * @param parent
      * @param child
      */
-    dom_js.append_child = function (parent, child) {
+    module.exports.append_child = function (parent, child) {
         if (typeof child === "string") {
             if (parent.namespace === namespaces.svg) child = document.createTextNode(child, true);
             else child = document.createTextNode(child);
@@ -120,48 +122,48 @@
     };
 
     /**
-     * remove `element`
+     * remove element
      * @param element
      */
-    dom_js.remove_element = function (element) { if (element && element.parentNode) element.parentNode.removeChild(element); };
+    module.exports.remove_element = function (element) { if (element && element.parentNode) element.parentNode.removeChild(element); };
 
     /**
-     * remove `elements`
+     * remove elements
      * @param elements
      */
-    dom_js.remove_elements = function (elements) { if (Array.isArray(elements)) elements.forEach(function (element) { dom_js.remove_element(element); }); };
+    module.exports.remove_elements = function (elements) { if (Array.isArray(elements)) elements.forEach(function (element) { module.exports.remove_element(element); }); };
 
     /**
-     * empty `element`
+     * empty element
      * @param element
      */
-    dom_js.empty_element = function (element) {
+    module.exports.empty_element = function (element) {
         while (element.firstChild) element.removeChild(element.firstChild);
     };
 
     /**
-     * set `attributes` to `element`
+     * set attributes to element
      * @param element
      * @param attributes
      */
-    dom_js.set_attributes = function (element, attributes) {
+    module.exports.set_attributes = function (element, attributes) {
         for (var key in attributes) if (attributes.hasOwnProperty(key)) element.setAttribute(key, attributes[key]);
     };
 
     /**
-     * prevent default for `event`
+     * prevent default for event
      * @param event
      */
-    dom_js.prevent_default = function (event) {
+    module.exports.prevent_default = function (event) {
         if (event.preventDefault) event.preventDefault();
         else event.returnValue = false;
     };
 
     /**
-     * stop propagation of `event`
+     * stop propagation of event
      * @param event
      */
-    dom_js.stop_propagation = function (event) {
+    module.exports.stop_propagation = function (event) {
         if (event.stopPropagation) event.stopPropagation();
         else {
             event.cancelBubble = true;
@@ -170,13 +172,13 @@
     };
 
     /**
-     * squash `event`
+     * squash event
      * @param event
      * @returns {boolean}
      */
-    dom_js.squash_event = function squash_event(event) {
-        dom_js.prevent_default(event);
-        dom_js.stop_propagation(event);
+    module.exports.squash_event = function squash_event(event) {
+        module.exports.prevent_default(event);
+        module.exports.stop_propagation(event);
         return false;
     };
 
@@ -184,18 +186,18 @@
      * get bounds for page
      * @returns {{width: (Number|number), height: (Number|number)}}
      */
-    dom_js.get_page_bounds = function () {
+    module.exports.get_page_bounds = function () {
         var w = window.innerWidth || document.body.clientWidth || document.documentElement.clientWidth,
             h = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight;
         return {width: w, height: h};
     };
 
     /**
-     * get bounds for `element`
+     * get bounds for element
      * @param element
      * @returns {{x: (*|n.x|Number), y: (*|n.y|Number), width: Number, height: Number, top: Number, left: Number, bottom: Number, right: Number}}
      */
-    dom_js.get_bounds = function (element) {
+    module.exports.get_bounds = function (element) {
         var native_bounds = element.getBoundingClientRect(),
             bounds = {
                 x: native_bounds.x,
@@ -215,14 +217,14 @@
     };
 
     /**
-     * is `child` within bounds of `container`
+     * is child within bounds of container
      * @param child
      * @param container
      * @returns {boolean}
      */
-    dom_js.is_within_bounds = function (child, container) {
-        var child_bounds = dom_js.get_bounds(child),
-            container_bounds = dom_js.get_bounds(container),
+    module.exports.is_within_bounds = function (child, container) {
+        var child_bounds = module.exports.get_bounds(child),
+            container_bounds = module.exports.get_bounds(container),
             child_center_x = child_bounds.left + (child_bounds.width / 2),
             child_center_y = child_bounds.top + (child_bounds.height / 2);
         return ((child_bounds.left >= container_bounds.left && child_bounds.left <= container_bounds.right) &&
@@ -232,10 +234,10 @@
     };
 
     /**
-     * is the mouse `event` a right click?
+     * is the mouse event a right click?
      * stolen from: http://stackoverflow.com/a/2405835/156225
      */
-    dom_js.is_right_click = function (event) {
+    module.exports.is_right_click = function (event) {
         // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
         if ("which" in event) return event.which === 3;
         // IE, Opera
@@ -243,18 +245,18 @@
     };
 
     /**
-     * is object `o` a node?
+     * is object o a node?
      * stolen from: http://stackoverflow.com/a/384380/156225
      */
-    dom_js.is_node = function (o) {
+    module.exports.is_node = function (o) {
         return (typeof Node === "object" ? o instanceof Node : o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string");
     };
 
     /**
-     * is object `o` an html element?
+     * is object o an html element?
      * stolen from: http://stackoverflow.com/a/384380/156225
      */
-    dom_js.is_html_element = function (o) {
+    module.exports.is_html_element = function (o) {
         return (typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
         o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
     };
@@ -297,20 +299,21 @@
         };
     }
 
-    dom_js.Accordion = function (list, content_renderer) {
+    // TODO: move this out of here!
+    module.exports.Accordion = function (list, content_renderer) {
         var accordion = this;
         var sections = list.map(function (item) {
-            var header = dom_js.create_element("div.header", null, [item.title], {click: on_click});
-            var section = dom_js.create_element("div.section", null, [header]);
+            var header = module.exports.create_element("div.header", null, [item.title], {click: on_click});
+            var section = module.exports.create_element("div.section", null, [header]);
 
             function on_click() {
                 if (!on_click.content) {
                     on_click.content = content_renderer(item);
-                    dom_js.append_child(section, on_click.content);
+                    module.exports.append_child(section, on_click.content);
                     section.classList.add("section_active");
                 }
                 else {
-                    dom_js.remove_element(on_click.content);
+                    module.exports.remove_element(on_click.content);
                     on_click.content = null;
                     section.classList.remove("section_active");
                 }
@@ -318,7 +321,7 @@
 
             return section;
         });
-        accordion.dom_element = dom_js.create_element("div.accordion", null, sections);
+        accordion.dom_element = module.exports.create_element("div.accordion", null, sections);
         return accordion;
     };
 

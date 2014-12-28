@@ -1,0 +1,22 @@
+{
+    "name": "dom_js",
+    "version": "0.0.1",
+    "description": "small, sensible, minimalist dom library",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"no tests yet! :o\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Srirangan/dom_js.git"
+    },
+    "keywords": [
+        "dom"
+    ],
+    "author": "Sri <srirangan@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Srirangan/dom_js/issues"
+    },
+    "homepage": "https://github.com/Srirangan/dom_js"
+}
